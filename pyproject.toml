@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iam-credential-rotation"
+version = "0.0.1"
+authors = [
+  { name="Nic Cheneweth", email="nchenewe@thoughtworks.com" },
+]
+description = "automated rotation for iam machine account programmatic credentials"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ThoughtWorks-DPS/iam-credential-rotatation"
+"Bug Tracker" = "https://github.com/ThoughtWorks-DPS/iam-credential-rotatation/issues"
