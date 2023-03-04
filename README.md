@@ -33,7 +33,7 @@ This will work well so long as these long-running jobs do not exist for longer t
 ## Install
 
 ```bash
-pip install iam-credential-rotator
+pip install iam-credential-rotation
 ```
 
 ## Usage
