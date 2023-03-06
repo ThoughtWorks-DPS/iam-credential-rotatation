@@ -64,6 +64,7 @@ jobs:
           command: |
             pipenv --python 3.10
             pipenv shell
+            pipenv install
       - run:
           name: Build
           command: python3 -m build
