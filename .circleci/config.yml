@@ -1,0 +1,83 @@
+---
+version: 2.1
+
+orbs:
+  op: twdps/onepassword@1.0.0
+  do: twdps/pipeline-events@0.1.0
+
+# ================================================================= global configuration
+
+parameters:
+  context:
+    description: circleci context for all jobs
+    type: string
+    default: twdps-core-labs-team
+
+on-push-main: &on-push-main
+  branches:
+    only: /main/
+  tags:
+    ignore: /.*/
+
+on-tag-main: &on-tag-main
+  branches:
+    ignore: /.*/
+  tags:
+    only: /.*/
+
+executors:
+  python-builder:
+    docker:
+      - image: twdps/circleci-python-builder:stable
+
+# ================================================================= commands
+
+# commands:
+
+#   setup-credentials:
+#     parameter:
+#       environment:
+#         description: test or prod
+#         type: string
+#         default: test
+#     steps: 
+#       - 
+# ================================================================= jobs
+
+jobs:
+  
+  continuous integration:
+    executor: python-builder
+    steps:
+      - checkout
+      - setup_remote_docker
+      - op/env:
+          env-file: op.env
+      - run:
+          name: exit
+          command: exit 1
+      - run:
+          name: lint
+          command: pylint src
+      - run: 
+          name: setup virtual environment
+          command: |
+            pipenv --python 3.10
+            pipenv shell
+      - run:
+          name: Build
+          command: python3 -m build
+      - run:
+          name: exit
+          command: exit 1
+
+# ================================================================= workflows
+
+workflows:
+  version: 2
+  dev-build:
+    jobs:
+      - continuous integration:
+          name: Build from merge trigger
+          context: << pipeline.parameters.context >>
+          filters: *on-push-main

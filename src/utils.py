@@ -3,7 +3,10 @@ from pathvalidate import ValidationError, validate_filename
 import click
 import boto3
 import botocore.exceptions
-from constants import MAX_SVC_ACCOUNTS
+
+# Total machine-users in an account is expected to be a relatively low number. Because of that
+# the tool limits the number of such users that can be changed at once to prevent unexpected damage.
+MAX_SVC_ACCOUNTS=20
 
 def validate_outfile(_ctx, _param, value):
     """Validate --outfile option parameter contents"""
