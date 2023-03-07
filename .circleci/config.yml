@@ -70,7 +70,21 @@ commands:
 
 jobs:
   
-  continuous integration:
+  static code analysis and unit tests:
+    executor: python-builder
+    steps:
+      - checkout
+      - setup_remote_docker
+      - op/env:
+          env-file: op.env
+      - run:
+          name: lint
+          command: pylint src
+      # - run:
+      #     name: unit test
+      #     command:
+
+  build package and integration test:
     executor: python-builder
     steps:
       - checkout
@@ -80,9 +94,6 @@ jobs:
       - set-credentials:
           environment: test
       - run:
-          name: lint
-          command: pylint src
-      - run:
           name: Build
           command: |
             pipenv install
@@ -90,14 +101,46 @@ jobs:
       - run:
           name: upload to test.pypi
           command: python -m twine upload --repository testpypi dist/*
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - dist/
+
+  publish:
+    executor: python-builder
+    steps:
+      - checkout
+      - setup_remote_docker
+      - op/env:
+          env-file: op.env
+      - set-credentials:
+          environment: prod
+      - attach_workspace:
+          at: workspace
+      - run:
+          name: upload to pypi
+          command: python -m twine upload --repository pypi dist/*   
 
 # ================================================================= workflows
 
 workflows:
   version: 2
-  dev-build:
+
+  python package pipeline:
     jobs:
-      - continuous integration:
-          name: Build from merge trigger
+
+      - static code analysis and unit tests:
           context: << pipeline.parameters.context >>
           filters: *on-push-main
+
+      - build package and integration test:
+          context: << pipeline.parameters.context >>
+          requires:
+            - static code analysis and unit tests
+          filters: *on-tag-main
+          
+      - publish:
+          context: << pipeline.parameters.context >>
+          requires:
+            - build package and integration test
+          filters: *on-tag-main
