@@ -80,9 +80,6 @@ jobs:
       - set-credentials:
           environment: test
       - run:
-          name: exit
-          command: exit 1
-      - run:
           name: lint
           command: pylint src
       - run: 
