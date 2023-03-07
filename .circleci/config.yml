@@ -102,7 +102,7 @@ jobs:
           name: upload to test.pypi
           command: python -m twine upload --repository testpypi dist/*
       - persist_to_workspace:
-          root: workspace
+          root: .
           paths:
             - dist/
 
@@ -115,8 +115,7 @@ jobs:
           env-file: op.env
       - set-credentials:
           environment: prod
-      - attach_workspace:
-          at: workspace
+      - attach_workspace
       - run:
           name: upload to pypi
           command: python -m twine upload --repository pypi dist/*   
