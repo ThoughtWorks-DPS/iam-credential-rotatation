@@ -82,15 +82,11 @@ jobs:
       - run:
           name: lint
           command: pylint src
-      - run: 
-          name: setup virtual environment
-          command: |
-            pipenv --python 3.10
-            pipenv shell
-            pipenv install
       - run:
           name: Build
-          command: python3 -m build
+          command: |
+            pipenv install
+            python -m build
       - run:
           name: upload to test.pypi
           command: python -m twine upload --repository testpypi dist/*
