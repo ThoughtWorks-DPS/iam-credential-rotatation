@@ -4,6 +4,9 @@ import versioneer
 with open("README.md", "r", encoding = "utf-8") as fh:
     long_description = fh.read()
 
+versioneer.VCS = 'git'
+versioneer.versionfile_source = 'src/_version.py'
+
 setuptools.setup(
     name = "iam-credential-rotation",
     version=versioneer.get_version(),
