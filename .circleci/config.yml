@@ -32,16 +32,40 @@ executors:
 
 # ================================================================= commands
 
-# commands:
+commands:
 
-#   setup-credentials:
-#     parameter:
-#       environment:
-#         description: test or prod
-#         type: string
-#         default: test
-#     steps: 
-#       - 
+  set-credentials:
+    parameters:
+      environment:
+        description: test or prod
+        type: string
+        default: test
+    steps: 
+      - when:
+          condition:
+            equal: [ << parameters.environment >>, "test" ]
+          steps:
+            - run:
+                name: set test.pypi access
+                command: |
+                  cat \<<EOF > ~/.pypirc
+                  [pypi]
+                    username = __token__
+                    password = ${PYPI_TEST_API_TOKEN}
+                  EOF
+      - when:
+          condition:
+            equal: [ << parameters.environment >>, "prod" ]
+          steps:
+            - run:
+                name: set pypi access
+                command: |
+                  cat \<<EOF > ~/.pypirc
+                  [pypi]
+                    username = __token__
+                    password = ${PYPI_API_TOKEN}
+                  EOF
+
 # ================================================================= jobs
 
 jobs:
@@ -53,6 +77,8 @@ jobs:
       - setup_remote_docker
       - op/env:
           env-file: op.env
+      - set-credentials:
+          environment: test
       - run:
           name: exit
           command: exit 1
@@ -69,8 +95,8 @@ jobs:
           name: Build
           command: python3 -m build
       - run:
-          name: exit
-          command: exit 1
+          name: upload to test.pypi
+          command: python -m twine upload --repository testpypi dist/*
 
 # ================================================================= workflows
 

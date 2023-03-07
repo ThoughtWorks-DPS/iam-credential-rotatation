@@ -15,6 +15,7 @@ build = "0.10.0"
 wheel = "0.38.4"
 twine = "4.0.2"
 pylint = "2.16.3"
+versioneer = "0.28"
 
 [requires]
 python_version = "3.10"
