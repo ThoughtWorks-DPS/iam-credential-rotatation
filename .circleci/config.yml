@@ -135,8 +135,6 @@ workflows:
 
       - build package and integration test:
           context: << pipeline.parameters.context >>
-          requires:
-            - static code analysis and unit tests
           filters: *on-tag-main
           
       - publish:
