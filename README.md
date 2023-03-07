@@ -50,4 +50,3 @@ Options:
 2. python setup.py develop
 3. python -m build
 4. python3 -m twine upload --repository testpypi dist/*  
-
