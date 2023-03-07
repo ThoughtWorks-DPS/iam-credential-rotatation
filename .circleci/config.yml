@@ -115,7 +115,8 @@ jobs:
           env-file: op.env
       - set-credentials:
           environment: prod
-      - attach_workspace
+      - attach_workspace:
+          at: .
       - run:
           name: upload to pypi
           command: python -m twine upload --repository pypi dist/*   
