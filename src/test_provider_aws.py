@@ -2,7 +2,7 @@ import boto3
 from moto import mock_iam, mock_sts
 import pytest 
 import click
-from src.provider_aws import validate_access, list_keys, create_key, delete_key, rotate_credentials
+from provider_aws import validate_access, list_keys, create_key, delete_key, rotate_credentials
 
 @mock_sts
 def test_validate_access():

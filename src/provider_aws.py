@@ -2,7 +2,7 @@ import json
 import boto3
 import botocore.exceptions
 import click
-from src.utils import validate_user_count
+from utils import validate_user_count
 
 def validate_access():
   sts = boto3.client('sts')
