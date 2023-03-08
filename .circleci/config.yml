@@ -84,9 +84,9 @@ jobs:
           name: unit test
           command: |
             pipenv install
-            coverage run -m pytest -vv -l
-            coverage xml --omit='src/test*'
-            coverage report
+            pipenv run coverage run -m pytest -vv -l
+            pipenv run coverage xml --omit='src/test*'
+            pipenv run coverage report
       - run:
           name: report test coverage
           command: |
