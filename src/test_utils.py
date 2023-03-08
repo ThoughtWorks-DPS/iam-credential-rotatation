@@ -1,6 +1,6 @@
+from io import StringIO
 from unittest.mock import patch, mock_open
 import pytest
-from io import StringIO
 import click
 from src.utils import output_results, validate_user_count
 
@@ -11,11 +11,11 @@ def test_user_count_is_in_valid_range():
 
 def test_user_count_is_zero():
     with pytest.raises(click.UsageError) as _:
-          result = validate_user_count(0)
+          _ = validate_user_count(0)
 
 def test_user_count_is_too_high():
     with pytest.raises(click.UsageError) as _:
-          result = validate_user_count(21)
+          _ = validate_user_count(21)
 
 def test_output_results():
     results = "testcredentials"
