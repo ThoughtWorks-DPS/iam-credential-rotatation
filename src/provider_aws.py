@@ -1,7 +1,16 @@
 import json
 import boto3
+import botocore.exceptions
 import click
 from utils import validate_user_count
+
+def validate_access():
+  sts = boto3.client('sts')
+  try:
+      sts.get_caller_identity()
+  except botocore.exceptions.ClientError as e:
+      raise click.BadParameter(f"Invalid AWS credentials: {e}")
+  return True
 
 def list_keys(iam, user):
     """exception checking for boto3.iam.list_access_keys """
@@ -9,8 +18,6 @@ def list_keys(iam, user):
         access_keys = iam.list_access_keys(UserName=user)["AccessKeyMetadata"]
     except iam.exceptions.NoSuchEntityException as e:
         raise click.UsageError(f"Specified user not found: {e}")
-    except iam.exceptions.ServiceFailureException as e:
-        raise click.UsageError(f"list access key service failed: {e}")
     return access_keys
 
 def delete_key(iam, user, access_key_id):
@@ -19,10 +26,6 @@ def delete_key(iam, user, access_key_id):
         _ = iam.delete_access_key(UserName=user,AccessKeyId=access_key_id)
     except iam.exceptions.NoSuchEntityException as e:
         raise click.UsageError(f"Specified user not found: {e}")
-    except iam.exceptions.LimitExceededException as e:
-        raise click.UsageError(f"Key deletion rate limit exceeded: {e}")
-    except iam.exceptions.ServiceFailureException as e:
-        raise click.UsageError(f"Key deletion service failed: {e}")
 
 def create_key(iam, user):
     """exception checking for boto3.iam.create_access_key """
@@ -30,10 +33,6 @@ def create_key(iam, user):
         new_access_key = iam.create_access_key(UserName=user)
     except iam.exceptions.NoSuchEntityException as e:
         raise click.UsageError(f"Specified user not found: {e}")
-    except iam.exceptions.LimitExceededException as e:
-        raise click.UsageError(f"Key creation rate limit exceeded: {e}")
-    except iam.exceptions.ServiceFailureException as e:
-        raise click.UsageError(f"Key creation service failed: {e}")
     return new_access_key
     
 def rotate_credentials(user_path):

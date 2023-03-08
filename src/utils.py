@@ -1,8 +1,6 @@
 import re
 from pathvalidate import ValidationError, validate_filename
 import click
-import boto3
-import botocore.exceptions
 
 # Total machine-users in an account is expected to be a relatively low number. Because of that
 # the tool limits the number of such users that can be changed at once to prevent unexpected damage.
@@ -24,14 +22,6 @@ def validate_path(_ctx, _param, value):
     if re.fullmatch(valid_path, value):
         return f"/{value}/"
     raise click.BadParameter('invalid PATH for IAM Users')
-
-def validate_access():
-  sts = boto3.client('sts')
-  try:
-      sts.get_caller_identity()
-  except botocore.exceptions.ClientError as e:
-      raise click.BadParameter(f"Invalid AWS credentials: {e}")
-  return True
 
 def validate_user_count(svc_accounts):
     """Validate user count is greater than 0 and less than MAX_SVC_ACCOUNTS"""

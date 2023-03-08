@@ -1,6 +1,6 @@
 import click
-from utils import validate_outfile, validate_path, validate_access, output_results
-from provider_aws import rotate_credentials
+from utils import validate_outfile, validate_path, output_results
+from provider_aws import rotate_credentials, validate_access
 
 @click.version_option()
 @click.command(no_args_is_help=True)

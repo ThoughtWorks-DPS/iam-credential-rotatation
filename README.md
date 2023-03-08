@@ -45,8 +45,3 @@ Options:
 -o, --outfile TEXT   # if desired, rather than piping results to a file you can directly provide a filename.  
 
 ### Development
-
-1. setup venv
-2. python setup.py develop
-3. python -m build
-4. python3 -m twine upload --repository testpypi dist/*  
