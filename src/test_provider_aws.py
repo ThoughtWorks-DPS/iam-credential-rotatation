@@ -99,4 +99,13 @@ def test_rotate_credentials():
     _ = iam.create_access_key(UserName='testuser')
     results = rotate_credentials('testpath')
     assert "AccessKeyId" in results
-    
+
+@mock_iam
+def test_greater_than_max_svc_accounts():
+    iam = boto3.client('iam')
+
+    for i in range(1,21):
+      _ = iam.create_user(Path='testuserpath', UserName=f"testuser{i}",)
+
+    with pytest.raises(click.UsageError) as e:
+      _ = rotate_credentials('testpath')

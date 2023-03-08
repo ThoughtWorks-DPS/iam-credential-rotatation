@@ -80,9 +80,17 @@ jobs:
       - run:
           name: lint
           command: pylint src
-      # - run:
-      #     name: unit test
-      #     command:
+      - run:
+          name: unit test
+          command: |
+            coverage run -m pytest -vv -l
+            coverage xml --omit='src/test*'
+            coverage report
+      - run:
+          name: report test coverage
+          command: |
+            cc-test-reporter format-coverage -t coverage.py
+            cc-test-reporter upload-coverage
 
   build package and integration test:
     executor: python-builder
