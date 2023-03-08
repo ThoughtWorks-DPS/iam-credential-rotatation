@@ -23,9 +23,8 @@ def validate_path(_ctx, _param, value):
         return f"/{value}/"
     raise click.BadParameter('invalid PATH for IAM Users')
 
-def validate_user_count(svc_accounts):
+def validate_user_count(user_count):
     """Validate user count is greater than 0 and less than MAX_SVC_ACCOUNTS"""
-    user_count = len(svc_accounts['Users'])
     if user_count == 0:
         raise click.UsageError("No IAM Users found on PATH")
     if user_count > MAX_SVC_ACCOUNTS:

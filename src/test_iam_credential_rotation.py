@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+from src.iam_credential_rotation import cli
 from iam_credential_rotation import cli
 
 def test_iam_credential_rotation_invalid_filename():
@@ -22,7 +23,7 @@ def test_iam_credential_rotation_version():
   result = runner.invoke(cli, ['--version'])
   assert "version" in result.output
 
-def test_iam_credential_invalid_flag():
+def test_iam_credential_rotation_invalid_flag():
   runner = CliRunner()
   result = runner.invoke(cli, ['--invalidflag'])
   assert "No such option:" in result.output

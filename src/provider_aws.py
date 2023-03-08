@@ -2,7 +2,7 @@ import json
 import boto3
 import botocore.exceptions
 import click
-from utils import validate_user_count
+from src.utils import validate_user_count
 
 def validate_access():
   sts = boto3.client('sts')
@@ -40,7 +40,7 @@ def rotate_credentials(user_path):
     iam = boto3.client('iam')
 
     svc_accounts = iam.list_users(PathPrefix=user_path)
-    _ = validate_user_count(svc_accounts)
+    _ = validate_user_count(len(svc_accounts['Users']))
     new_credentials = {}
 
     for user in svc_accounts['Users']:
