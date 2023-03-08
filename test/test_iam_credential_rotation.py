@@ -1,5 +1,5 @@
 from click.testing import CliRunner
-from src.iam_credential_rotation import cli
+from iam_credential_rotation import cli
 
 def test_iam_credential_rotation_invalid_filename():
   runner = CliRunner()
