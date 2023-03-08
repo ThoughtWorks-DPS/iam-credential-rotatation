@@ -1,8 +1,8 @@
-from provider_aws import validate_access, list_keys, create_key, delete_key, rotate_credentials
 import boto3
 from moto import mock_iam, mock_sts
 import pytest 
 import click
+from provider_aws import validate_access, list_keys, create_key, delete_key, rotate_credentials
 
 @mock_sts
 def test_validate_access():
@@ -27,8 +27,8 @@ def test_create_key_exception():
         UserName='testuser',
     )
 
-    with pytest.raises(click.UsageError) as e:
-        access_key = create_key(iam, 'invaliduser')
+    with pytest.raises(click.UsageError) as _:
+        _ = create_key(iam, 'invaliduser')
 
 @mock_iam
 def test_list_keys():
@@ -54,8 +54,8 @@ def test_list_keys_exception():
         UserName='testuser',
     )
 
-    with pytest.raises(click.UsageError) as e:
-        access_keys = list_keys(iam, 'invaliduser')
+    with pytest.raises(click.UsageError) as _:
+        _ = list_keys(iam, 'invaliduser')
 
 @mock_iam
 def test_delete_key():
@@ -81,9 +81,9 @@ def test_delete_key_exceptions():
     )
 
     access_key = create_key(iam, 'testuser')
-    with pytest.raises(click.UsageError) as e:
+    with pytest.raises(click.UsageError) as _:
         delete_key(iam, 'invaliduser', access_key['AccessKey']['AccessKeyId'])
-    with pytest.raises(click.UsageError) as e:
+    with pytest.raises(click.UsageError) as _:
         delete_key(iam, 'testuser', 'invalidaccesskeyid')
 
 @mock_iam
@@ -107,5 +107,5 @@ def test_greater_than_max_svc_accounts():
     for i in range(1,21):
       _ = iam.create_user(Path='testuserpath', UserName=f"testuser{i}",)
 
-    with pytest.raises(click.UsageError) as e:
+    with pytest.raises(click.UsageError) as _:
       _ = rotate_credentials('testpath')
