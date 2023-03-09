@@ -99,7 +99,9 @@ jobs:
             cc-test-reporter upload-coverage
       - run:
           name: cve scan
-          command: snyk test
+          command: |
+            pipenv update
+            snyk test
 
   build package and integration test:
     executor: python-builder
