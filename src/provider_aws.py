@@ -34,7 +34,7 @@ def create_key(iam, user):
     except iam.exceptions.NoSuchEntityException as e:
         raise click.UsageError(f"Specified user not found: {e}")
     return new_access_key
-    
+
 def rotate_credentials(user_path):
     """rotate keys for all iam users in path"""
     iam = boto3.client('iam')
