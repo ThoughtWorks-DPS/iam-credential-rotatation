@@ -79,7 +79,7 @@ jobs:
           env-file: op.env
       - run:
           name: lint
-          command: pylint src && exit 1
+          command: pylint src
       - run:
           name: unit test
           command: |
