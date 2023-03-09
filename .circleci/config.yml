@@ -40,7 +40,7 @@ commands:
         description: test or prod
         type: string
         default: test
-    steps: 
+    steps:
       - when:
           condition:
             equal: [ << parameters.environment >>, "test" ]
@@ -53,6 +53,11 @@ commands:
                     username = __token__
                     password = ${PYPI_TEST_API_TOKEN}
                   EOF
+            - run:
+                name: snyk credentials
+                command: |
+                  snyk config set api=${SNYK_TOKEN}
+                  snyk config set org=twdps
       - when:
           condition:
             equal: [ << parameters.environment >>, "prod" ]
@@ -69,7 +74,7 @@ commands:
 # ================================================================= jobs
 
 jobs:
-  
+
   static code analysis and unit tests:
     executor: python-builder
     steps:
@@ -92,6 +97,9 @@ jobs:
           command: |
             cc-test-reporter format-coverage -t coverage.py
             cc-test-reporter upload-coverage
+      - run:
+          name: cve scan
+          command: snyk test
 
   build package and integration test:
     executor: python-builder
@@ -128,7 +136,7 @@ jobs:
           at: .
       - run:
           name: upload to pypi
-          command: python -m twine upload --repository pypi dist/*   
+          command: python -m twine upload --repository pypi dist/*
       - do/slack-webhook:
           message: iam-credential-rotation $CIRCLE_TAG release
           webhook-url: $LAB_EVENTS_CHANNEL_WEBHOOK
@@ -148,7 +156,7 @@ workflows:
       - build package and integration test:
           context: << pipeline.parameters.context >>
           filters: *on-tag-main
-          
+
       - publish:
           context: << pipeline.parameters.context >>
           requires:
