@@ -129,6 +129,9 @@ jobs:
       - run:
           name: upload to pypi
           command: python -m twine upload --repository pypi dist/*   
+      - do/slack-webhook:
+          message: iam-credential-rotation $CIRCLE_TAG release
+          webhook-url: $LAB_EVENTS_CHANNEL_WEBHOOK
 
 # ================================================================= workflows
 
