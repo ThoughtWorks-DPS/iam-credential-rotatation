@@ -53,11 +53,6 @@ commands:
                     username = __token__
                     password = ${PYPI_TEST_API_TOKEN}
                   EOF
-            - run:
-                name: snyk credentials
-                command: |
-                  snyk config set api=${SNYK_TOKEN}
-                  snyk config set org=twdps
       - when:
           condition:
             equal: [ << parameters.environment >>, "prod" ]
@@ -82,6 +77,11 @@ jobs:
       - setup_remote_docker
       - op/env:
           env-file: op.env
+      - run:
+          name: snyk credentials
+          command: |
+            snyk config set api=${SNYK_TOKEN}
+            snyk config set org=twdps
       - run:
           name: lint
           command: pylint src
