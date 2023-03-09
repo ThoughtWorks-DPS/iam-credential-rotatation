@@ -84,7 +84,6 @@ jobs:
           name: unit test
           command: |
             pipenv install --dev
-            pipenv shell
             PYTHONPATH=.:./src coverage run -m pytest -vv -l /test
             coverage xml --omit='src/test*'
             coverage report
