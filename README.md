@@ -6,7 +6,7 @@
 	</p>
   <br />
   <h3>iam-credential-rotation</h3>
-    <a href="https://app.circleci.com/pipelines/github/ThoughtWorks-DPS/iam-credential-rotation"><img src="https://circleci.com/gh/ThoughtWorks-DPS/iam-credential-rotation.svg?style=shield"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+    <a href="https://app.circleci.com/pipelines/github/ThoughtWorks-DPS/iam-credential-rotation"><img src="https://dl.circleci.com/status-badge/img/gh/ThoughtWorks-DPS/iam-credential-rotatation/tree/main.svg?style=shield"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </div>
 <br />
 
